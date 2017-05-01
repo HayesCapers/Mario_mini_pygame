@@ -25,7 +25,7 @@ class Background(object):
 		}
 		#spawn points have to be divisible by marios speed!
 		self.goomba_spawn_points = [-500, -516, -700, -1000, -2000, -2532, -2548, -2560, -2568, -2600, -2624, -2700, -2800, -2900, -3000, -3100, -3200, -3300, -3400, -3500, -4000, -4300]
-		self.block_locations = [2500]
+		self.block_locations = [500, 527, 2500]
 
 	def draw_background(self, mario):
 		if mario.alive:
