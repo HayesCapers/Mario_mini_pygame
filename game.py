@@ -24,7 +24,7 @@ def run_game():
 	main_menu_y = 50
 	mario = Mario(screen)
 	background = Background(screen, './mario_pics/full_background_no_sky.png', mario, 0)
-	main_menu_background = Background(screen, './mario_pics/full_background_no_sky.png', mario, 225)
+	main_menu_background = Background(screen, './mario_pics/full_background_no_sky.png', mario, 300)
 	question_blocks = Group()
 	physics = Physics()
 	# first_goomba = Goomba(screen)
@@ -35,6 +35,10 @@ def run_game():
 	tick = 0
 	power_timer = 0
 	background_color = (93,148,251)
+	main_menu_font = pygame.font.Font('./mario_pics/8_bit_pusab.ttf', 10)
+	star_game_text = main_menu_font.render('Press SPACE to Start.', False, (0,0,0))
+	start_text_x = 200
+	start_text_y = 250
 	game_over_font = pygame.font.Font('./mario_pics/8_bit_pusab.ttf', 25)
 	main_menu = True
 	start_game = False
@@ -61,27 +65,30 @@ def run_game():
 	while game_on == True:
 
 		# print main_menu
-		# if main_menu == True:
-		# 	for event in pygame.event.get():
-		# 		if event.type == pygame.QUIT:
-		# 			sys.exit()
-		# 		elif event.type == pygame.KEYDOWN:
-		# 			if event.key == 32:
-		# 				start_game = True
-		# 	if start_game:
-		# 		if main_menu_background.y > 0:
-		# 			main_menu_background.y -= 1
-		# 			main_menu_y -= 1
-		# 		elif main_menu_background.y == 0:
-		# 			main_menu = False
+		if main_menu == True:
+			for event in pygame.event.get():
+				if event.type == pygame.QUIT:
+					sys.exit()
+				elif event.type == pygame.KEYDOWN:
+					if event.key == 32:
+						start_game = True
+			if start_game:
+				if main_menu_background.y > 0:
+					main_menu_background.y -= 1
+					main_menu_y -= 1
+					start_text_y -= 1
+				elif main_menu_background.y == 0:
+					main_menu = False
 
 			
-				
-			# screen.blit(mario_main_menu_pic, (main_menu_x, main_menu_y))			
-				# main_menu_background.draw_background(mario)
+			screen.fill(background_color)	
+			screen.blit(mario_main_menu_pic, (main_menu_x, main_menu_y))
+			screen.blit(star_game_text, [start_text_x, start_text_y])
+			main_menu_background.draw_background(mario)
 				# pygame.display.flip()
 	
 		# print tick
+		elif main_menu == False:
 			for i in background.goomba_spawn_points:
 				if background.x == i:
 					enemies.add(Goomba(screen))
@@ -157,11 +164,11 @@ def run_game():
 					theme_song = pygame.mixer.music.unpause()
 			if mario.alive == False:
 				game_over_text = game_over_font.render("GAME OVER!", False, (0,0,0))
-				screen.blit(game_over_text, [200,150])
+				screen.blit(game_over_text, [150,150])
 				theme_song = pygame.mixer.music.stop()
 			# print background.x
 			# first_goomba.draw_goomba(mario)
-			pygame.display.flip()
+		pygame.display.flip()
 			
 			
 
