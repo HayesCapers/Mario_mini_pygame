@@ -38,7 +38,7 @@ class Mario(object):
 		self.y = 290
 		self.speed = 4
 		self.jump_speed = 15
-		self.max_jump_height = 163
+		self.max_jump_timer = 0
 		self.screen = screen
 		self.should_move_up = False
 		self.should_move_right = False
@@ -65,12 +65,14 @@ class Mario(object):
 		if self.alive:
 			update_timer()
 			if self.should_move_up:
+				self.max_jump_timer += 1
 				self.y -= self.jump_speed - physics.gravity
 			elif self.should_move_up == False:
 				self.y += physics.gravity
-			if self.y <= self.max_jump_height:
+			if self.max_jump_timer >= 15:
 				self.should_move_up = False
 				self.y += self.speed
+				self.max_jump_timer = 0
 			self.power_up_collision(power_up_group)
 			self.block_collision(block_group)
 			self.should_fall(background)
