@@ -6,7 +6,8 @@ from background import Background
 from mario import Mario
 from physics import Physics
 from goomba import Goomba
-from block import Block
+from question_block import QuestionBlock
+from reg_blocks import RegBlock
 from pygame.sprite import Group
 from power_up import Star
 from math import fabs
@@ -26,6 +27,7 @@ def run_game():
 	background = Background(screen, './mario_pics/full_background_no_sky.png', mario, 0)
 	main_menu_background = Background(screen, './mario_pics/full_background_no_sky.png', mario, 300)
 	question_blocks = Group()
+	reg_blocks = Group()
 	physics = Physics()
 	# first_goomba = Goomba(screen)
 	enemies = Group()
@@ -44,7 +46,10 @@ def run_game():
 	start_game = False
 	
 	for i in background.block_locations:
-		question_blocks.add(Block(screen, mario.speed, i))
+		question_blocks.add(QuestionBlock(screen, mario.speed, i))
+
+	# for i in background.reg_block_locations:
+	# 	reg_blocks.add(RegBlock(screen, mario.speed, i))	
 	# for block in question_blocks:
 	# 	stars.add(Star(screen, block.x))
 	r = randint(150, 255)
@@ -62,10 +67,10 @@ def run_game():
 	death_sound = pygame.mixer.Sound('./sounds/smb_mariodie.wav')
 	
 	
-	while game_on == True:
+	while game_on:
 
 		# print main_menu
-		if main_menu == True:
+		if main_menu:
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					sys.exit()
@@ -88,7 +93,7 @@ def run_game():
 				# pygame.display.flip()
 	
 		# print tick
-		elif main_menu == False:
+		elif not main_menu:
 			for i in background.goomba_spawn_points:
 				if background.x == i:
 					enemies.add(Goomba(screen))
@@ -100,6 +105,8 @@ def run_game():
 			for star in stars:
 				star.draw_me(background, physics, question_blocks, mario)
 			for block in question_blocks:
+				block.draw_block(background)
+			for blokc in reg_blocks:
 				block.draw_block(background)
 			for block in question_blocks:
 				if block.x <= mario.x + 27 and block.x >= mario.x:
